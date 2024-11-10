@@ -46,7 +46,7 @@ let trafficLightDuration = 5000; // Default duration for traffic lights (in mill
 let lightToggleInterval; // Variable to hold the interval timer
 
 // Dynamic UI generation for settings
-function generateSettingsUI() {
+function generateSettingsUI() { //Vallabh
     const intersectionSettings = document.getElementById('intersectionSettings');
     const roadSettings = document.getElementById('roadSettings');
     const roadClosure = document.getElementById('roadClosure');
@@ -123,7 +123,7 @@ intersectionSettings.innerHTML = `
             ).join('')}
           </select>
            <div id="lightControls" class="radio-group">
-            <h3>Current Duration :</h3>
+            <h3>Toggle status : </h3>
               <button id="helloButton">Road status Toggle</button>
             </div>
         </label>
@@ -142,7 +142,7 @@ intersectionSettings.innerHTML = `
           }
  
   let selectedRoadId = null;
-  function updateRoadInput(roadId) {
+  function updateRoadInput(roadId) { //Vallabh
     if (!roadId) return;
     selectedRoadId = roadId;
     const inputs=document.getElementsByName('inputValue');
@@ -153,7 +153,7 @@ intersectionSettings.innerHTML = `
   };
  
  
-  function updateRadioButtons(intersectionId) {
+  function updateRadioButtons(intersectionId) { //Vallabh
     if (!intersectionId) return;
     const intersection = intersections.find(i => i.id == intersectionId);
     const radioButtons = document.getElementsByName('trafficLight');
@@ -170,7 +170,7 @@ intersectionSettings.innerHTML = `
 
 // Start the traffic light toggle process
 
-function setTrafficLight(intersectionId, value) {
+function setTrafficLight(intersectionId, value) { //Vallabh
   const intersection = intersections.find(i => i.id == intersectionId);
   intersection.lightGreen = value === 'true';
   drawMap();
@@ -183,28 +183,18 @@ function setTrafficLight(intersectionId, value) {
 }
 }
 
-function setRoadTime(id) {
-  console.log(id);
-  roads.forEach(road => {
-    if (road.id == id) {
-      road.time = parseInt(document.querySelector('input[type="number"]').value);
-    }
-  });
-  drawMap();
-};
-
 // Draw the map with updated settings
-function drawMap() {
+function drawMap() { //varun
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // Draw roads with congestion
-  roads.forEach(road => {
+  roads.forEach(road => {   
     const start = intersections.find(i => i.id === road.start);
     const end = intersections.find(i => i.id === road.end);
     if (start && end) {
       // Draw base road
       ctx.beginPath();
-      ctx.moveTo(start.x, start.y);
+      ctx.moveTo(start.x, start.y);  
       ctx.lineTo(end.x, end.y);
       ctx.lineWidth = 4;
       ctx.strokeStyle = road.isOpen ? '#4a90e2' : '#A62D2D';
@@ -214,7 +204,7 @@ function drawMap() {
       const congestion = trafficSystem.getRoadCongestion(road.id);
       if (congestion > 0) {
         ctx.beginPath();
-        ctx.moveTo(start.x, start.y);
+        ctx.moveTo(start.x, start.y); 
         ctx.lineTo(end.x, end.y);
         ctx.strokeStyle = `rgba(231, 76, 60, ${congestion * 0.7})`;
         ctx.lineWidth = 6;
@@ -224,9 +214,9 @@ function drawMap() {
       // Draw road travel time
       const midX = (start.x + end.x) / 2;
       const midY = (start.y + end.y) / 2;
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = 'white';
       ctx.font = '16px Arial';
-      ctx.fillText(`${road.time} min`, midX, midY);
+      ctx.fillText(road.time+" min", midX, midY);
     }
   });
 
@@ -234,20 +224,20 @@ function drawMap() {
   intersections.forEach(intersection => {
     ctx.beginPath();
     ctx.arc(intersection.x, intersection.y, 12, 0, Math.PI * 2);
-    ctx.fillStyle = intersection.hasTrafficLight ? 
-      (intersection.lightGreen ? '#2ecc71' : '#e74c3c') : '#3498db';
+    ctx.fillStyle =
+      (intersection.lightGreen ? '#2ecc71' : '#e74c3c') ;
     ctx.fill();
     ctx.strokeStyle = '#2c3e50';
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    ctx.fillStyle = '#ffffff';
+    ctx.fillStyle = 'white';
     ctx.font = '14px Arial';
     ctx.fillText(intersection.name, intersection.x - 20, intersection.y - 20);
   });
 }
 
-function findShortestPath(startId, endId) {
+function findShortestPath(startId, endId) { 
   const distances = {};
   const previousNodes = {};
   const unvisitedNodes = new Set(intersections.map(i => i.id));
@@ -359,7 +349,7 @@ function findAlternativeRoutes(startId, endId, maxRoutes = 3) {
   
 // Update simulation function
 // Modify the existing updateSimulation function
-function updateSimulation() {
+function updateSimulation() { //samruddhi
   const startId = parseInt(document.getElementById('startPoint').value);
   const endId = parseInt(document.getElementById('endPoint').value);
   
@@ -377,7 +367,7 @@ function updateSimulation() {
   animate();
 }
 
-function calculateRouteCongestion(route) {
+function calculateRouteCongestion(route) { //samruddhi
   let totalCongestion = 0;
   for (let i = 0; i < route.length - 1; i++) {
     const roadId = `${Math.min(route[i], route[i+1])}-${Math.max(route[i], route[i+1])}`;
@@ -387,7 +377,7 @@ function calculateRouteCongestion(route) {
 }
 
 document.getElementById('findPath').addEventListener('click', updateSimulation);
-class Vehicle {
+class Vehicle { //samruddhi
   constructor(id, startId, endId, path) {
     this.id = id;
     this.x = 0;
@@ -418,8 +408,7 @@ class Vehicle {
   }
 }
 
-// Add the traffic management system
-const trafficSystem = {
+const trafficSystem = { //samruddhi
   vehicles: new Map(),
   roadCongestion: new Map(),
   stats: {
@@ -481,29 +470,12 @@ const trafficSystem = {
     return congestion;
   },
 
-  updateStats() {
-    let totalWaitTime = 0;
-    let waitingVehicles = 0;
-    
-    this.vehicles.forEach(vehicle => {
-      if (vehicle.isWaitingAtLight) {
-        totalWaitTime += vehicle.waitingTime;
-        waitingVehicles++;
-      }
-    });
-    
-    this.stats.averageWaitTime = waitingVehicles > 0 ? 
-      totalWaitTime / waitingVehicles : 0;
-    this.stats.totalWaitTime = totalWaitTime;
-  },
-
   getRoadId(startId, endId) {
     return `${Math.min(startId, endId)}-${Math.max(startId, endId)}`;
   }
 };
-// Initialize
 
-function moveVehicles() {
+function moveVehicles() { //varun
   trafficSystem.vehicles.forEach(vehicle => {
     if (!vehicle.isMoving || vehicle.currentPathIndex >= vehicle.currentPath.length - 1) return;
 
@@ -512,7 +484,7 @@ function moveVehicles() {
     
     if (!currentIntersection || !nextIntersection) return;
 
-    if (currentIntersection.hasTrafficLight && !currentIntersection.lightGreen && 
+    if (!currentIntersection.lightGreen && 
         Math.abs(vehicle.x - currentIntersection.x) < 5 && 
         Math.abs(vehicle.y - currentIntersection.y) < 5) {
       vehicle.isWaitingAtLight = true;
@@ -523,9 +495,6 @@ function moveVehicles() {
     if (vehicle.isWaitingAtLight && currentIntersection.lightGreen) {
       vehicle.isWaitingAtLight = false;
     }
-
-    if (vehicle.isWaitingAtLight) return;
-
     const dx = nextIntersection.x - vehicle.x;
     const dy = nextIntersection.y - vehicle.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -577,36 +546,27 @@ function animate() {
 
   moveVehicles();
   drawVehicles();
-  trafficSystem.updateStats();
 
   requestAnimationFrame(animate);
 }
-function addStatsDisplay() {
-  const statsDiv = document.createElement('div');
-  statsDiv.id = 'trafficStats';
-  statsDiv.style.marginTop = '20px';
-  statsDiv.innerHTML = `
-    <h3>Traffic Statistics</h3>
-    <div id="statsContent"></div>
-  `;
-  document.getElementById('settings').appendChild(statsDiv);
-}
-function updateStatsDisplay() {
-  const statsContent = document.getElementById('statsContent');
-  if (statsContent) {
-    statsContent.innerHTML = `
-      <p>Total Vehicles: ${trafficSystem.stats.totalVehicles}</p>
-      <p>Completed Trips: ${trafficSystem.stats.completedTrips}</p>
-      <p>Average Wait Time: ${trafficSystem.stats.averageWaitTime.toFixed(2)} seconds</p>
-      <p>Congestion Points: ${trafficSystem.stats.congestionPoints.size}</p>
-    `;
+
+document.getElementById('startAccidents').addEventListener('click', randomaccident);
+document.getElementById('stopAccidents').addEventListener('click',()=>{
+  roads.forEach(road => {
+    road.isOpen = true;
   }
+  );
+  drawMap();
+} );
+function randomaccident() {
+  const road = roads[Math.floor(Math.random() * roads.length)];
+  road.isOpen = false;
+  setTimeout(() => {
+    road.isOpen = true;
+    drawMap();
+  }, 15000);
+  drawMap();
 }
-
-addStatsDisplay();
-
-
-setInterval(updateStatsDisplay, 1000); 
 
 generateSettingsUI();
 drawMap();
