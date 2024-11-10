@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City Traffic Flow Simulation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>City Traffic Flow Simulation</h1>
+    </header>
+    
+    <main>
+      <section class="simulation-controls">
+        <div class="route-selection">
+          <label for="startPoint">Start Point:</label>
+          <select id="startPoint">
+            <option value="1">Intersection 1</option>
+            <option value="2">Intersection 2</option>
+            <option value="3">Intersection 3</option>
+            <option value="4">Intersection 4</option>
+            <option value="5">Intersection 5</option>
+            <option value="6">Intersection 6</option>
+            <option value="7">Intersection 7</option>
+            <option value="8">Intersection 8</option>
+            <option value="9">Intersection 9</option>
+            <option value="10">Intersection 10</option>
+            <option value="11">Intersection 11</option>
+            <option value="12">Intersection 12</option>
+            <option value="13">Intersection 13</option>
+          </select>
+
+          <label for="endPoint">End Point:</label>
+          <select id="endPoint">
+            <option value="1">Intersection 1</option>
+            <option value="2">Intersection 2</option>
+            <option value="3">Intersection 3</option>
+            <option value="4">Intersection 4</option>
+            <option value="5">Intersection 5</option>
+            <option value="6">Intersection 6</option>
+            <option value="7">Intersection 7</option>
+            <option value="8">Intersection 8</option>
+            <option value="9">Intersection 9</option>
+            <option value="10">Intersection 10</option>
+            <option value="11">Intersection 11</option>
+            <option value="12">Intersection 12</option>
+            <option value="13">Intersection 13</option>
+          </select>
+          <button id="findPath">Find Optimal Path</button>
+          <button id="startAccidents">Start accidents</button>
+          <button id="stopAccidents">Stop accidents</button>
+        </div>
+        <div id="settings">
+          <!-- Your existing settings content -->
+      </div>
+      <div class="settings">
+        <div class="settings-column">
+          <h2>Intersection Settings</h2>
+          <div id="intersectionSettings"></div>
+        </div>
+        <div class="settings-column">
+          <h2>Road Settings</h2>
+          <div id="roadSettings"></div>
+        </div>
+        <div class="settings-column">
+          <h2>Road Closure</h2>
+          <div id="roadClosure"></div>
+        </div>
+      </div>
+      
+      </section>
+
+      <section class="simulation-view">
+        <canvas id="trafficCanvas"></canvas>
+      </section>
+
+    
+    </main>
+  </div>
+  <script src="scrit.js"></script>
+  <script  src="Congestion.js"></script>
+</body>
+</html>
